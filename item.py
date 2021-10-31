@@ -52,6 +52,7 @@ class Item():
             f.write(str(self.last_id))
 
     def __get_item_by_path(item, path):
+        
         with open(path, "r") as item_file:
             _data_ = json.load(item_file)
             item.id = _data_["id"]
@@ -59,7 +60,7 @@ class Item():
             item.price = _data_["price"]
             item.selling_price = _data_["sellingPrice"]
             item.qty = _data_["qty"]
-
+        
     def all_items(self):
         item_file_names = os.listdir(__item_folder__)
         items = []
@@ -69,6 +70,17 @@ class Item():
                 item, f"{__item_folder__}/{item_file_name}")
             items.append(item)
         return items
+
+    def get_by_id(self,id):
+        Item.__get_item_by_path(self, f"{__item_folder__}/{id}.db")
+
+    def delete_item(self,id):
+        if os.path.exists(f"{__item_folder__}/{id}.db"):
+            os.remove(f"{__item_folder__}/{id}.db")
+            print("**",id,"deleted","**")
+        else:
+            print("The item does not exist")
+
 
 
 def create_item(name,price,selling_price,qty):
@@ -83,3 +95,15 @@ def get_all_items():
     item = Item()
     items = item.all_items()
     pprint(items)
+
+def item_view_by_id(id):
+    item = Item()
+    item.id = id
+    item.get_by_id(id)
+    print(item.id, item.name, item.price, item.selling_price)
+
+def item_delete(id):
+    item = Item()
+    item.id = id
+    item.delete_item(id)
+    

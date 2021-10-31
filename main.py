@@ -2,7 +2,7 @@ import click
 import sys
 from click.decorators import argument
 
-from item import create_item, get_all_items, init
+from item import create_item, get_all_items, init, item_delete, item_view_by_id
 
 if __name__ == '__main__':
     arguments = sys.argv[1:]
@@ -18,3 +18,7 @@ if __name__ == '__main__':
             create_item(*params)
         elif command == "all":
             get_all_items()
+        elif command == "view":
+            item_view_by_id(*params)
+        elif command == "delete":
+            item_delete(*params)

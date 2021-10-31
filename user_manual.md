@@ -4,6 +4,10 @@
 
     db init
 
-**create items**
+**Create items**
 
     item create <name> <price> <selling_price> <qty>
+
+**Get all items**
+
+    item all
