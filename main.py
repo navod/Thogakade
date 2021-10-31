@@ -2,10 +2,7 @@ import click
 import sys
 from click.decorators import argument
 
-from item import create_item, init
-
-
-
+from item import create_item, get_all_items, init
 
 if __name__ == '__main__':
     arguments = sys.argv[1:]
@@ -19,3 +16,5 @@ if __name__ == '__main__':
     if section == "item":
         if command == "create":
             create_item(*params)
+        elif command == "all":
+            get_all_items()
