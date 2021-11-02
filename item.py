@@ -16,11 +16,11 @@ class Item():
             self.last_id = 0
 
     def __repr__(self):
-        return f"id:{self.id},name:{self.name},price:{self.price},SellingPrice:{self.selling_price},qty:{self.qty}"
+        return f"id:{self.id},name:{self.name},price:{self.price},sellingPrice:{self.selling_price},qty:{self.qty}"
 
 
     def __str__(self):
-        return f"id:{self.id},name:{self.name},price:{self.price},SellingPrice:{self.selling_price},qty:{self.qty}"
+        return f"id:{self.id},name:{self.name},price:{self.price},sellingPrice:{self.selling_price},qty:{self.qty}"
 
     def save(self):
         id = self.last_id+1
@@ -61,7 +61,7 @@ class Item():
             items.append(item)
         return items
 
-    def get_by_id(self,id):
+    def get_by_item_id(self,id):
         Item.__get_item_by_path(self, f"{__item_folder__}/{id}.db")
 
     def delete_item(self,id):
@@ -89,8 +89,9 @@ def get_all_items():
 def item_view_by_id(id):
     item = Item()
     item.id = id
-    item.get_by_id(id)
-    print(item.id, item.name, item.price, item.selling_price)
+    item.get_by_item_id(id)
+    print(item.id, item.name, item.price, item.selling_price, item.qty)
+    return item
 
 def item_delete(id):
     item = Item()
