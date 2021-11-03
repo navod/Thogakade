@@ -72,14 +72,29 @@ class Order():
 
 
 
-def place_order(customerId,itemId,qty,price):
+def place_order(customerId,itemId,qty):
     order = Order()
     order.customer_id = customerId
     order.date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    order.save_order()
-    is_place = place_order_details(order.last_id,customerId,itemId,qty,price)
+    is_qty_available = check_qty(itemId,qty)
+    if is_qty_available[0] :
+        order.save_order()
+        is_place = place_order_details(order.last_id,customerId,itemId,qty,is_qty_available[1])
+        if is_place:
+            print("Your order placed..!")
+    else:
+        print("Already sold all items..!")
+
    
 
+def check_qty(itemId,qty):
+    with open("db/item/"f"{itemId}.db", "r") as jsonFile:
+            data = json.load(jsonFile)
+
+    if int(data["qty"]) > int(qty):
+        return True,float(data["sellingPrice"])
+    else:
+        return False
 # def get_all_items():
 #     item = Item()
 #     items = item.all_items()

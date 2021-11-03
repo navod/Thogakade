@@ -2,7 +2,7 @@ import json
 import os
 from pprint import pprint
 import datetime
-
+from collections import defaultdict
 from item import Item, item_view_by_id
 
 __db_location__ = "db"
@@ -86,16 +86,34 @@ def place_order_details(orderId,customerId,itemId,qty,price):
     order_details.qty = qty
     order_details.price = float(price) * float(qty)
     
-
-    
-    order_details.save_order_details()
-    print(itemId)
-
     items = item_view_by_id(itemId)
+    is_update_qty = update_qty(items,qty)
+    
+    if is_update_qty:
+        order_details.save_order_details()
+        return True
+    
+    else:
+        return False
 
-    print(type(items))
-    print(items)
-    # print("Hello")
+
+def update_qty(items,qty):
+
+    item_dict = vars(items)
+   
+ 
+    new_qty = str(int(item_dict["qty"]) - int(qty))
+
+
+    with open("db/item/"f"{items.id}.db", "r") as jsonFile:
+        data = json.load(jsonFile)
+
+    data["qty"] = new_qty
+
+    with open("db/item/"f"{items.id}.db", "w") as jsonFile:
+        json.dump(data, jsonFile)
+        return True
+    
 
 # def get_all_items():
 #     item = Item()

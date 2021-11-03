@@ -3,8 +3,8 @@ import os
 from pprint import pprint
 
 __db_location__ = "db"
-__item_folder__ = f"{__db_location__}/item"
-__item__last_id__ = f"{__db_location__}/item_id.db"
+__item_folder__ = f"{__db_location__}/user"
+__item__last_id__ = f"{__db_location__}/user_id.db"
 
 
 class Item():
