@@ -81,6 +81,7 @@ def create_item(name,price,selling_price,qty):
     item.selling_price = selling_price
     item.qty = qty
     item.save()
+    print("** item added successfully..!**")
 
 def get_all_items():
     item = Item()

@@ -12,6 +12,7 @@ __customer_folder__ = f"{__db_location__}/customer"
 __order_folder__ = f"{__db_location__}/order"
 __order_detail_folder__ = f"{__db_location__}/order_detail"
 
+
 def init(arguments):
 
     def db():
@@ -19,6 +20,7 @@ def init(arguments):
         os.makedirs(__item_folder__)
         os.makedirs(__order_folder__)
         os.makedirs(__order_detail_folder__)
+
 
     section = arguments[0]
     if section == "init":
@@ -46,14 +48,28 @@ if __name__ == '__main__':
         elif command == "delete":
             item_delete(*params)
     elif section == "customer":
-        if command == "create":
-            create_customer(*params)
-        elif command == "all":
-            get_all_customers()
-        elif command == "view":
-            customer_view_by_id(*params)
-        elif command == "delete":
-            customer_delete(*params)
+        # try:
+            if command == "create":
+                create_customer(*params)
+        
+            elif command == "all":
+                get_all_customers()
+        
+            elif command == "view":
+                customer_view_by_id(*params)
+        
+            elif command == "delete":
+                customer_delete(*params)
+        
+            elif command == "login":
+                login_user(*params)
+
+            elif command == "logout":
+                logout()
+        # except:
+        #     print("*** Please user details correctly..! ***")
+        
     elif section == "order":
         if command == "place":
             place_order(*params)
+   

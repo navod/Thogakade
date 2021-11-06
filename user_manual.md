@@ -2,7 +2,7 @@
 
 **Init database**
 
-    db init
+    init db
 
 **Create items**
 
@@ -22,7 +22,7 @@
 
 **Create customers**
 
-    customer create <name> <address> <contact>
+    customer create <name> <password> <address> <contact>
 
 **Get all customers**
 
@@ -35,3 +35,15 @@
 **Delete customer**
 
     customer delete <id>
+
+**Login customers**
+
+    customer login <name> <password>
+
+**Logout customers**
+
+    customer logout
+
+**place order**
+
+    order place <item_id> <qty>
