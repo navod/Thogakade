@@ -3,7 +3,7 @@ import os
 from pprint import pprint
 import datetime
 from collections import namedtuple
-from item import Item, item_update, item_view_by_id
+from item import Item, item_get_by_id, item_update, item_view_by_id
 import order
 
 __db_location__ = "db"
@@ -20,11 +20,11 @@ class OrderDetails():
             self.last_id = 0
 
     def __repr__(self):
-        return f"id:{self.id},orderId:{self.order_id},customerId:{self.customer_id},itemId:{self.item_id},itemId:{self.item_name},qty:{self.qty},price:{self.price}"
+        return f"id:{self.id},orderId:{self.order_id},customerId:{self.customer_id},itemId:{self.item_id},name:{self.item_name},qty:{self.qty},price:{self.price}"
 
 
     def __str__(self):
-        return f"id:{self.id},orderId:{self.order_id},customerId:{self.customer_id},itemId:{self.item_id},itemId:{self.item_name},qty:{self.qty},price:{self.price}"
+        return f"id:{self.id},orderId:{self.order_id},customerId:{self.customer_id},itemId:{self.item_id},name:{self.item_name},qty:{self.qty},price:{self.price}"
 
     def save_order_details(self):
         id = self.last_id+1
@@ -92,7 +92,7 @@ class OrderDetails():
 
 
 def place_order_details(orderId,customerId,itemId,qty,price):
-    items = item_view_by_id(itemId)
+    items = item_get_by_id(itemId)
     order_details = OrderDetails()
     order_details.order_id = orderId
     order_details.customer_id = customerId
@@ -154,12 +154,11 @@ def update_order():
 
   
 def update_order_details(order_id,new_item_id,qty,old_item_id):
-    print(order_id,new_item_id,qty)
+    
     order_detail = OrderDetails()
     order_details = order_detail.get_by_id(order_id) 
-    new_items = item_view_by_id(new_item_id)
+    new_items = item_get_by_id(new_item_id)
     
-    print(order_details)
     is_update_qty = update_qty(new_items,qty)
 
     # new order update
@@ -170,7 +169,7 @@ def update_order_details(order_id,new_item_id,qty,old_item_id):
            
 
 def update_old_qty(old_item_id,qty):
-    old_items = item_view_by_id(old_item_id)
+    old_items = item_get_by_id(old_item_id)
     item_dict = vars(old_items)
     new_qty = str(int(item_dict["qty"]) + int(qty))
 
@@ -184,9 +183,8 @@ def update_old_qty(old_item_id,qty):
         return True
      
 def update_new_order(order_id,new_item_id,qty,name,price):
-    print(qty)
-    old_orders = item_view_by_id(order_id)
-    order_dict = vars(old_orders)
+    # old_orders = order_view_by_id(order_id)
+    # order_dict = vars(old_orders)
 
     with open("db/order_detail/"f"{order_id}.db", "r") as jsonFile:
         data = json.load(jsonFile)
@@ -199,17 +197,25 @@ def update_new_order(order_id,new_item_id,qty,name,price):
     with open("db/order_detail/"f"{order_id}.db", "w") as jsonFile:
         json.dump(data, jsonFile)
         return True
-# def get_all_items():
-#     item = Item()
-#     items = item.all_items()
-#     pprint(items)
 
-# def item_view_by_id(id):
-#     item = Item()
-#     item.id = id
-#     item.get_by_id(id)
-#     print(item.id, item.name, item.price, item.selling_price)
+def get_all_orders():
+    order_detail = OrderDetails()
+    items = order_detail.all_orders()
+    print('----------------------------------------------------------------------------------------------------------------------')
+    print('|                                                        orders                                                       |')
+    print('----------------------------------------------------------------------------------------------------------------------')
+    pprint(items)
+    print('----------------------------------------------------------------------------------------------------------------------')
 
+def order_view_by_id(id):
+    order_detail = OrderDetails()
+    order_detail.id = id
+    order_details = order_detail.get_by_id(id)
+    print('----------------------------------------------------------------------------------------------------------------------')
+    print('|                                                        orders                                                       |')
+    print('----------------------------------------------------------------------------------------------------------------------')
+    pprint(order_details)
+    print('----------------------------------------------------------------------------------------------------------------------')
 def order_delete(id):
     order_detail = OrderDetails()
     order_details = order_detail.all_orders()

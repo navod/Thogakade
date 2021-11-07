@@ -3,8 +3,8 @@ import sys
 from customer import *
 import os
 from item import *
-from order import order_done, place_order
-from order_details import order_delete, update_order
+from order import get_my_orders, order_done, place_order
+from order_details import *
 
 # folders 
 __db_location__ = "db"
@@ -80,4 +80,10 @@ if __name__ == '__main__':
             order_delete(*params)
         if command == "done":
             order_done(*params)
+        if command == "all":
+            get_all_orders()
+        if command =="view":
+            order_view_by_id(*params)
+        if command =="myorders":
+            get_my_orders()
    

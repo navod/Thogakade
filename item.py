@@ -84,14 +84,28 @@ def create_item(name,price,selling_price,qty):
 def get_all_items():
     item = Item()
     items = item.all_items()
+    print('----------------------------------------------------------------------------------------------------------------------')
+    print('|                                                        items                                                       |')
+    print('----------------------------------------------------------------------------------------------------------------------')
     pprint(items)
+    print('----------------------------------------------------------------------------------------------------------------------')
 
 def item_view_by_id(id):
     item = Item()
     item.id = id
     item.get_by_item_id(id)
+    print('----------------------------------------------------------------------------------------------------------------------')
+    print('|                                                        items                                                       |')
+    print('----------------------------------------------------------------------------------------------------------------------')
     print(item.id, item.name, item.price, item.selling_price, item.qty)
+    print('----------------------------------------------------------------------------------------------------------------------')
+
+def item_get_by_id(id):
+    item = Item()
+    item.id = id
+    item.get_by_item_id(id)
     return item
+
 
 def item_delete(id):
     item = Item()
@@ -99,7 +113,7 @@ def item_delete(id):
     item.delete_item(id)
 
 def item_update(id,qty):
-    items = item_view_by_id(id)
+    items = item_get_by_id(id)
     item_dict = vars(items)
     new_qty = str(int(item_dict["qty"]) + int(qty))
 

@@ -52,6 +52,18 @@
 
     order delete <order_id>
 
+**View All Order**
+
+    order all
+
+**View order by admin**
+
+    order view <order_id>
+
+**View order by customer**
+
+    order myorders
+
 **order confirmation**
 
     order done <order_id>

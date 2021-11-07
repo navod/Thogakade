@@ -4,12 +4,13 @@ from pprint import pprint
 import datetime
 
 
-from order_details import place_order_details
+from order_details import OrderDetails, place_order_details
 
 __db_location__ = "db"
 __order_folder__ = f"{__db_location__}/order"
 __order__last_id__ = f"{__db_location__}/order_id.db"
 __user_id__ = f"{__db_location__}/user.db"
+__order_detail_folder__ = f"{__db_location__}/order_detail"
 
 class Order():
     def __init__(self) :
@@ -132,10 +133,60 @@ def order_done(id):
     else:
          print("** Sorry could not find the order id "f"{id} **" )  
 
-# def get_all_items():
-#     item = Item()
-#     items = item.all_items()
-#     pprint(items)
+
+def get_my_orders():
+
+    user = Order._get_user_by_path()
+    if user is not None:
+        print("Choose your option :")
+        print("[1]. All orders")
+        print("[2]. One order")
+        user_input = input("Please select number : ")
+        
+        if user_input == "2":
+            order_id = input("Please eneter your order id : ")
+
+        if user_input == "1":
+            order_id = None
+
+        result = filter_customer_orders(order_id)
+        
+        if result is not None :
+            print('----------------------------------------------------------------------------------------------------------------------')
+            print('|                                                        My Orders                                                    |')
+            print('----------------------------------------------------------------------------------------------------------------------')
+            pprint(result)
+            print('----------------------------------------------------------------------------------------------------------------------')
+            
+        else:
+            print("** You does not place orders.. ! **")
+        
+    else:
+        print("** Please login or create account **")
+
+
+def filter_customer_orders(order_id):
+    order_detail = OrderDetails()
+    order_details = order_detail.all_orders()
+    order_cust_id = order_detail._get_user_by_path()
+    orders_tuple = tuple(order_details)
+    cust_orders =[]
+
+    # check customer have an order and get their orders
+    if order_id == None :
+        for i in range(len(order_details)):
+            if int(order_cust_id) == int(orders_tuple[i].customer_id) :
+                cust_orders.append(orders_tuple[i])
+    else :
+        for i in range(len(order_details)):
+            if int(order_id) == int(orders_tuple[i].order_id) :
+                cust_orders.append(orders_tuple[i])
+
+ 
+    if len(cust_orders) == 0:
+        return None
+    else:
+           return cust_orders
 
 # def item_view_by_id(id):
 #     item = Item()
