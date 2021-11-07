@@ -47,3 +47,11 @@
 **place order**
 
     order place <item_id> <qty>
+
+**delete order**
+
+    order delete <order_id>
+
+**order confirmation**
+
+    order done <order_id>

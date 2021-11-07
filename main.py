@@ -3,7 +3,8 @@ import sys
 from customer import *
 import os
 from item import *
-from order import place_order
+from order import order_done, place_order
+from order_details import order_delete, update_order
 
 # folders 
 __db_location__ = "db"
@@ -47,6 +48,7 @@ if __name__ == '__main__':
             item_view_by_id(*params)
         elif command == "delete":
             item_delete(*params)
+
     elif section == "customer":
         # try:
             if command == "create":
@@ -72,4 +74,10 @@ if __name__ == '__main__':
     elif section == "order":
         if command == "place":
             place_order(*params)
+        if command == "update":
+            update_order()
+        if command == "delete":
+            order_delete(*params)
+        if command == "done":
+            order_done(*params)
    

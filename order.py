@@ -2,7 +2,7 @@ import json
 import os
 from pprint import pprint
 import datetime
-from customer import USER
+
 
 from order_details import place_order_details
 
@@ -20,11 +20,11 @@ class Order():
             self.last_id = 0
 
     def __repr__(self):
-        return f"id:{self.id},customerId:{self.customer_id},date:{self.date}"
+        return f"id:{self.id},customerId:{self.customer_id},date:{self.date},date:{self.status}"
 
 
     def __str__(self):
-        return f"id:{self.id},customerId:{self.customer_id},date:{self.date}"
+        return f"id:{self.id},customerId:{self.customer_id},date:{self.date},date:{self.status}"
 
     def save_order(self):
         id = self.last_id+1
@@ -34,6 +34,7 @@ class Order():
             "id": id,
             "customer_id": self.customer_id,
             "date": self.date,
+            "status":self.status
         }
         with open(f"{__order_folder__}/{id}.db", "w") as item_file:
             json.dump(_data_, item_file)
@@ -43,14 +44,14 @@ class Order():
         with open(__order__last_id__, "w") as f:
             f.write(str(self.last_id))
 
-    def __get_order_by_path(order, path):
+    def __get_order_by_path(self,order, path):
         
         with open(path, "r") as item_file:
             _data_ = json.load(item_file)
             order.id = _data_["id"]
-            order.customer_id = _data_["customerId"]
+            order.customer_id = _data_["customer_id"]
             order.date = _data_["date"]
-
+            order.status = _data_["status"]
 
     def _get_user_by_path():
         if os.path.exists(__user_id__):
@@ -86,11 +87,12 @@ def place_order(itemId,qty):
         order = Order()
         order.customer_id = Order._get_user_by_path()
         order.date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        order.status = "Pending"
         is_qty_available = check_qty(itemId,qty)
     
         if is_qty_available[0] :
             order.save_order()
-            is_place = place_order_details(order.last_id,USER,itemId,qty,is_qty_available[1])
+            is_place = place_order_details(order.last_id,order.customer_id,itemId,qty,is_qty_available[1])
             if  is_place:
                 print("Your order placed..!")
     except:
@@ -116,6 +118,19 @@ def check_qty(itemId,qty):
     else:
         print("** Please login..! **")
         return False,-1
+
+def order_done(id):
+    if os.path.exists(f"{__order_folder__}/{id}.db"):
+        with open("db/order/"f"{id}.db", "r") as jsonFile:
+            data = json.load(jsonFile)
+
+        data["status"] = "done"
+
+        with open("db/order/"f"{id}.db", "w") as jsonFile:
+            json.dump(data, jsonFile)
+            print("** Order mark as done..! **")
+    else:
+         print("** Sorry could not find the order id "f"{id} **" )  
 
 # def get_all_items():
 #     item = Item()

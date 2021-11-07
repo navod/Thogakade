@@ -43,7 +43,6 @@ class Item():
             f.write(str(self.last_id))
 
     def __get_item_by_path(item, path):
-        
         with open(path, "r") as item_file:
             _data_ = json.load(item_file)
             item.id = _data_["id"]
@@ -73,7 +72,6 @@ class Item():
             print("The item does not exist")
 
 
-
 def create_item(name,price,selling_price,qty):
     item = Item()
     item.name = name
@@ -99,4 +97,18 @@ def item_delete(id):
     item = Item()
     item.id = id
     item.delete_item(id)
+
+def item_update(id,qty):
+    items = item_view_by_id(id)
+    item_dict = vars(items)
+    new_qty = str(int(item_dict["qty"]) + int(qty))
+
+    with open("db/item/"f"{items.id}.db", "r") as jsonFile:
+        data = json.load(jsonFile)
+
+    data["qty"] = new_qty
+
+    with open("db/item/"f"{items.id}.db", "w") as jsonFile:
+        json.dump(data, jsonFile)
+        return True
     

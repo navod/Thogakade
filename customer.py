@@ -6,7 +6,7 @@ from pprint import pprint
 __db_location__ = "db"
 __customer_folder__ = f"{__db_location__}/customer"
 __customer__last_id__ = f"{__db_location__}/customer_id.db"
-USER = "NONE"
+
 __user_folder__ = f"{__db_location__}/user.db"
 
 class Customer():
@@ -74,12 +74,15 @@ class Customer():
         else:
             print("The customer does not exist")
 
+
     def login(self,userName,password):
+        USER = "NONE"
         customers = Customer()
         cust = customers.all_customers()
         cust_tuple = tuple(cust)
         if os.path.exists(f"{__user_folder__}"):
             print("** User Allready login..! **")
+            USER= "A"
         else:
             for i in range(len(cust)):
                 if userName == cust_tuple[i].name and password == cust_tuple[i].password :
