@@ -52,6 +52,10 @@
 
     order delete <order_id>
 
+**update order**
+
+    order update
+
 **View All Order**
 
     order all
